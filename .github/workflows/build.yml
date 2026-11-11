@@ -1,5 +1,6 @@
 
 
+
 name: Build APK
 
 'on':
@@ -31,7 +32,6 @@ jobs:
           distribution: temurin
           java-version: "17"
 
-      - 
       - name: Install system dependencies
         shell: bash
         run: |
@@ -45,7 +45,7 @@ jobs:
             fi
 
             if [ "$attempt" -eq 5 ]; then
-              echo "APT update failed after 5 attempts"
+              echo "APT update failed"
               exit 1
             fi
 
@@ -58,13 +58,12 @@ jobs:
             zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo5 \
             cmake libffi-dev libssl-dev libltdl-dev
 
-
       - name: Install Buildozer and Cython
         run: |
           python -m pip install --upgrade pip
           python -m pip install buildozer cython==0.29.33
 
-      - name: Cache Buildozer and SDK/NDK
+      - name: Cache Buildozer and SDK NDK
         uses: actions/cache@v4
         with:
           path: |

@@ -1,11 +1,14 @@
 
+
 name: Build APK
 
-on:
+'on':
   push:
-    branches: [ main ]
+    branches:
+      - main
   pull_request:
-    branches: [ main ]
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
@@ -34,18 +37,13 @@ jobs:
           sudo apt-get install -y \
             git zip unzip build-essential ccache \
             autoconf automake libtool pkg-config \
-            zlib1g-dev libncurses5-dev libncursesw5-dev \
-            libtinfo5 cmake libffi-dev libssl-dev libltdl-dev
+            zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo5 \
+            cmake libffi-dev libssl-dev libltdl-dev
 
       - name: Install Buildozer and Cython
         run: |
           python -m pip install --upgrade pip
           python -m pip install buildozer cython==0.29.33
-
-      - name: Check Buildozer configuration
-        run: |
-          buildozer --version
-          grep -E 'android.api|android.minapi|android.ndk_api|requirements' buildozer.spec
 
       - name: Cache Buildozer and SDK/NDK
         uses: actions/cache@v4
@@ -58,30 +56,11 @@ jobs:
             buildozer-${{ runner.os }}-
 
       - name: Build debug APK
-        run: |
-          buildozer -v android debug 2>&1 | tee build.log
-        shell: bash
-
-      - name: Upload build log
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: fatur-build-log
-          path: build.log
-          if-no-files-found: ignore
+        run: buildozer -v android debug
 
       - name: Upload APK artifact
-        if: success()
         uses: actions/upload-artifact@v4
         with:
           name: fatur-code-studio-apk
           path: bin/*.apk
           if-no-files-found: error
-
-
-    - name: Upload APK artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: fatur-code-studio-apk
-        path: bin/*.apk
-        if-no-files-found: error

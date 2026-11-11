@@ -21,7 +21,6 @@ android.permissions =
 android.api = 34
 android.ndk_api = 25
 android.archs = arm64-v8a
-android.archs = arm64-v8a, armeabi-v7a
 android.allow_backup = False
 android.accept_sdk_license = True
 android.release_artifact = apk

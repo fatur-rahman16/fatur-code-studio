@@ -10,7 +10,7 @@ source.exclude_patterns = *.pyc,*.md
 
 version = 1.0.0
 
-# Kivy 2.3.x sesuai PRD. Pygments opsional, kode memakai fallback aman.
+# Kivy 2.3.x
 requirements = python3,kivy==2.3.1,pygments
 
 orientation = all
@@ -19,8 +19,9 @@ fullscreen = 0
 # Tidak ada izin berbahaya. Aplikasi offline, tanpa INTERNET.
 android.permissions =
 android.api = 34
+android.minapi = 25
 android.ndk_api = 25
-android.archs = arm64-v8a
+android.archs = arm64-v8a, armeabi-v7a
 android.allow_backup = False
 android.accept_sdk_license = True
 android.release_artifact = apk

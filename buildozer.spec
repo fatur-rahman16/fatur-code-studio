@@ -29,6 +29,7 @@ android.debug_artifact = apk
 android.private_storage = True
 android.presplash_color = #0E1116
 p4a.bootstrap = sdl2
+p4a.branch = master
 
 [buildozer]
 log_level = 2

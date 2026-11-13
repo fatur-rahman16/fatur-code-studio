@@ -47,6 +47,10 @@ jobs:
           python -m pip install buildozer setuptools
           python -m pip install cython==0.29.34
 
+      - name: Clean previous Android build
+        run: |
+          rm -rf .buildozer
+
       - name: Build debug APK
         run: |
           buildozer -v android debug

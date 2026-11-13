@@ -1,6 +1,4 @@
 
-
-
 name: Build APK
 
 'on':
@@ -33,48 +31,25 @@ jobs:
           java-version: "17"
 
       - name: Install system dependencies
-        shell: bash
         run: |
-          set -e
-
-          for attempt in 1 2 3 4 5; do
-            echo "APT update attempt $attempt"
-
-            if sudo apt-get -o Acquire::Retries=5 update; then
-              break
-            fi
-
-            if [ "$attempt" -eq 5 ]; then
-              echo "APT update failed"
-              exit 1
-            fi
-
-            sleep 20
-          done
-
-          sudo apt-get -o Acquire::Retries=5 install -y \
+          sudo apt-get update
+          sudo apt-get install -y \
             git zip unzip build-essential ccache \
-            autoconf automake libtool pkg-config \
-            zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo5 \
-            cmake libffi-dev libssl-dev libltdl-dev
+            autoconf automake autopoint gettext \
+            libtool pkg-config \
+            zlib1g-dev libncurses5-dev libncursesw5-dev \
+            libtinfo5 cmake libffi-dev libssl-dev \
+            libltdl-dev
 
-      - name: Install Buildozer and Cython
+      - name: Install Buildozer
         run: |
-          python -m pip install --upgrade pip
-          python -m pip install buildozer cython==0.29.33
-
-      - name: Cache Buildozer and SDK NDK
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.buildozer
-            ~/.cache/pip
-          key: buildozer-${{ runner.os }}-${{ hashFiles('buildozer.spec') }}
-          restore-keys: |
-            buildozer-${{ runner.os }}-
+          python -m pip install pip==24.3.1
+          python -m pip install buildozer setuptools
+          python -m pip install cython==0.29.34
 
       - name: Build debug APK
-        run: buildozer -v android debug
+        run: |
+          buildozer -v android debug
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
